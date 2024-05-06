@@ -2,11 +2,13 @@ package main;
 
 public class Game {
 
-	private GameWindow gamewindow;
-	private GamePanel gamepanel;
+	private GameWindow gameWindow;
+	private GamePanel gamePanel;
 	
 	public Game() {
-		gamepanel = new GamePanel();
-		gamewindow = new GameWindow(gamepanel);
+		
+		gamePanel = new GamePanel();
+		gameWindow = new GameWindow(gamePanel);
+		gamePanel.setFocusable(true);
 	}
 }
