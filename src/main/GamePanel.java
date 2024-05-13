@@ -12,13 +12,16 @@ import javax.swing.JPanel;
 import inputs.KeyboardInputs;
 import inputs.MouseInputs;
 
+import static utilz.Constants.PlayerConstants.*;
+
 public class GamePanel extends JPanel {
 
 	private MouseInputs mouseInputs;
 	private float xDelta = 100, yDelta = 100;
 	private BufferedImage img;
-	private BufferedImage[] idleAni;
+	private BufferedImage[][] animations;
 	private int aniTick, aniIndex, aniSpeed = 15;
+	private int PlayerAction = IDLE;
 	
 	public GamePanel(){
 		
@@ -34,10 +37,12 @@ public class GamePanel extends JPanel {
 	}
 	
 	private void loadAnimations() {
-		idleAni = new BufferedImage[5];
+		animations = new BufferedImage[9][6];
 		
-		for (int i=0; i < idleAni.length; i++) {
-			idleAni[i] = img.getSubimage(i*64, 0, 64, 40);
+		for (int j=0; j < animations.length; j++) {
+			for (int i=0; i < animations[j].length; i++) {
+				animations[j][i] = img.getSubimage(i*64, j*40, 64, 40);
+			}			
 		}
 	}
 
@@ -84,7 +89,7 @@ public class GamePanel extends JPanel {
 		if (aniTick >= aniSpeed) {
 			aniTick = 0;
 			aniIndex++;
-			if (aniIndex >= idleAni.length) {
+			if (aniIndex >= GetSpriteAmount(PlayerAction)) {
 				aniIndex = 0;
 			}
 		}
@@ -95,7 +100,7 @@ public class GamePanel extends JPanel {
 		
 		updateAnimationTick();
 		
-		g.drawImage(idleAni[aniIndex], (int) xDelta, (int) yDelta, 128, 80, null);
+		g.drawImage(animations[PlayerAction][aniIndex], (int) xDelta, (int) yDelta, 256, 160, null);
 	}
 
 }
