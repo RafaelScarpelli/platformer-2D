@@ -1,9 +1,6 @@
 package entities;
 
-import static utilz.Constants.PlayerConstants.GetSpriteAmount;
-import static utilz.Constants.PlayerConstants.IDLE;
-import static utilz.Constants.PlayerConstants.RUNNING;
-import static utilz.Constants.PlayerConstants.ATTACK_1;
+import static utilz.Constants.PlayerConstants.*;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
@@ -35,7 +32,7 @@ public class Player extends Entity{
 	}
 	
 	public void render(Graphics g) {
-		g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, 64, 40, null);
+		g.drawImage(animations[playerAction][aniIndex], (int) x, (int) y, width, height, null);
 	}
 	
 	private void updateAnimationTick() {
