@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import gamestates.Gamestate;
 import utilz.LoadSave;
 
-public class MenuButtom {
+public class MenuButton {
 
 	private int xPos, yPos, rowIndex, index;
 	private int xOffsetCenter = B_WIDTH / 2;
@@ -21,7 +21,7 @@ public class MenuButtom {
 	private boolean mouseOver, mousePressed;
 	private Rectangle bounds;
 
-	public MenuButtom(int xPos, int yPos, int rowIndex, Gamestate state) {
+	public MenuButton(int xPos, int yPos, int rowIndex, Gamestate state) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.rowIndex = rowIndex;
