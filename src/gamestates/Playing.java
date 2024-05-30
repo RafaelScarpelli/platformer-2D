@@ -9,18 +9,18 @@ import levels.LevelManager;
 import main.Game;
 import ui.PauseOverlay;
 
-public class Playing extends State implements Statemethods{
+public class Playing extends State implements Statemethods {
 
 	private Player player;
 	private LevelManager levelManager;
 	private PauseOverlay pauseOverlay;
-	private boolean paused;
-	
+	private boolean paused = true;
+
 	public Playing(Game game) {
 		super(game);
 		initClasses();
 	}
-	
+
 	private void initClasses() {
 		levelManager = new LevelManager(game);
 		player = new Player(150, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE));
@@ -32,40 +32,45 @@ public class Playing extends State implements Statemethods{
 	public void update() {
 		levelManager.update();
 		player.update();
+
+		pauseOverlay.update();
 	}
 
 	@Override
 	public void draw(Graphics g) {
 		levelManager.draw(g);
 		player.render(g);
-		
+
 		pauseOverlay.draw(g);
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getButton() == MouseEvent.BUTTON1) {
+		if (e.getButton() == MouseEvent.BUTTON1) {
 			player.setAttacking(true);
 		}
-		
+
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		if (paused)
+			pauseOverlay.mousePressed(e);
+
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		if (paused)
+			pauseOverlay.mouseReleased(e);
+
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		if (paused)
+			pauseOverlay.mouseMoved(e);
+
 	}
 
 	@Override
@@ -84,7 +89,7 @@ public class Playing extends State implements Statemethods{
 			Gamestate.state = Gamestate.MENU;
 			break;
 		}
-		
+
 	}
 
 	@Override
@@ -98,11 +103,11 @@ public class Playing extends State implements Statemethods{
 			break;
 		case KeyEvent.VK_SPACE:
 			player.setJump(false);
-			break;			
+			break;
 		}
-		
+
 	}
-	
+
 	public void windowFocusLost() {
 		player.resetDirBooleans();
 	}
