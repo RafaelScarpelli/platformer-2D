@@ -7,16 +7,16 @@ import java.awt.image.BufferedImage;
 
 import utilz.LoadSave;
 
-public class SoundButton extends PauseButton{
+public class SoundButton extends PauseButton {
 
 	private BufferedImage[][] soundImgs;
 	private boolean mouseOver, mousePressed;
 	private boolean muted;
 	private int rowIndex, colIndex;
-	
+
 	public SoundButton(int x, int y, int width, int height) {
 		super(x, y, width, height);
-		
+
 		loadSoundImgs();
 	}
 
@@ -27,7 +27,7 @@ public class SoundButton extends PauseButton{
 			for (int i = 0; i < soundImgs[j].length; i++)
 				soundImgs[j][i] = temp.getSubimage(i * SOUND_SIZE_DEFAULT, j * SOUND_SIZE_DEFAULT, SOUND_SIZE_DEFAULT, SOUND_SIZE_DEFAULT);
 	}
-	
+
 	public void update() {
 		if (muted)
 			rowIndex = 1;
@@ -41,12 +41,12 @@ public class SoundButton extends PauseButton{
 			colIndex = 2;
 
 	}
-	
+
 	public void resetBools() {
 		mouseOver = false;
 		mousePressed = false;
 	}
-	
+
 	public void draw(Graphics g) {
 		g.drawImage(soundImgs[rowIndex][colIndex], x, y, width, height, null);
 	}
@@ -74,7 +74,5 @@ public class SoundButton extends PauseButton{
 	public void setMuted(boolean muted) {
 		this.muted = muted;
 	}
-	
-	
 
 }

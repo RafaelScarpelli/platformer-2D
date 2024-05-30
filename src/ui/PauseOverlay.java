@@ -44,8 +44,8 @@ public class PauseOverlay {
 	public void draw(Graphics g) {
 		// menu backgorund
 		g.drawImage(backgroundImg, bgX, bgY, bgW, bgH, null);
-		
-		//sound buttons
+
+		// sound buttons
 		musicButton.draw(g);
 		sfxButton.draw(g);
 	}
@@ -61,7 +61,7 @@ public class PauseOverlay {
 			sfxButton.setMousePressed(true);
 	}
 
-	public void mouseReleased(MouseEvent e) {	
+	public void mouseReleased(MouseEvent e) {
 		if (isIn(e, musicButton)) {
 			if (musicButton.isMousePressed())
 				musicButton.setMuted(!musicButton.isMuted());
@@ -70,7 +70,7 @@ public class PauseOverlay {
 			if (sfxButton.isMousePressed())
 				sfxButton.setMuted(!sfxButton.isMuted());
 		}
-		
+
 		musicButton.resetBools();
 		sfxButton.resetBools();
 	}
@@ -78,13 +78,13 @@ public class PauseOverlay {
 	public void mouseMoved(MouseEvent e) {
 		musicButton.setMouseOver(false);
 		sfxButton.setMouseOver(false);
-		
+
 		if (isIn(e, musicButton))
 			musicButton.setMouseOver(true);
 		else if (isIn(e, sfxButton))
 			sfxButton.setMouseOver(true);
 	}
-	
+
 	private boolean isIn(MouseEvent e, PauseButton b) {
 		return b.getBounds().contains(e.getX(), e.getY());
 	}
