@@ -1,30 +1,38 @@
 package ui;
 
+import static utilz.Constants.UI.VolumeButtons.*;
+
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import utilz.LoadSave;
-import static utilz.Constants.UI.URMButtons.*;
 
-public class UrmButton extends PauseButton {
+public class VolumeButton extends PauseButton {
 
 	private BufferedImage[] imgs;
-	private int rowIndex, index;
+	private BufferedImage slider;
+	private int index = 0;
 	private boolean mouseOver, mousePressed;
+	private int buttonX;
 
-	public UrmButton(int x, int y, int width, int height, int rowIndex) {
-		super(x, y, width, height);
-		this.rowIndex = rowIndex;
+	public VolumeButton(int x, int y, int width, int height) {
+		super(x + width / 2, y, VOLUME_DEFAULT_WIDTH, height);
+		buttonX = x + width / 2;
+		this.x = x;
+		this.width = width;
 		loadImgs();
 	}
 
 	private void loadImgs() {
-		BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.URM_BUTTONS);
+		BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.VOLUME_BUTTONS);
 		imgs = new BufferedImage[3];
 		for (int i = 0; i < imgs.length; i++) {
-			imgs[i] = temp.getSubimage(i * URM_DEFAULT_SIZE, rowIndex * URM_DEFAULT_SIZE, URM_DEFAULT_SIZE,
-					URM_DEFAULT_SIZE);
+			imgs[i] = temp.getSubimage(i * VOLUME_DEFAULT_WIDTH, 0, VOLUME_DEFAULT_WIDTH, VOLUME_DEFAULT_HEIGHT);
 		}
+
+		slider = temp.getSubimage(3 * VOLUME_DEFAULT_WIDTH, 0, SLIDER_DEFAULT_WIDTH, VOLUME_DEFAULT_HEIGHT);
+
 	}
 
 	public void update() {
@@ -33,12 +41,12 @@ public class UrmButton extends PauseButton {
 			index = 1;
 		if (mousePressed)
 			index = 2;
-
 	}
 
 	public void draw(Graphics g) {
 
-		g.drawImage(imgs[index], x, y, URM_SIZE, URM_SIZE, null);
+		g.drawImage(slider, x, y, width, height, null);
+		g.drawImage(imgs[index], buttonX, y, VOLUME_WIDTH, height, null);
 	}
 
 	public void resetBools() {
@@ -61,5 +69,4 @@ public class UrmButton extends PauseButton {
 	public void setMousePressed(boolean mousePressed) {
 		this.mousePressed = mousePressed;
 	}
-
 }
