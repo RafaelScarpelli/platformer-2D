@@ -76,6 +76,11 @@ public class Playing extends State implements Statemethods {
 			pauseOverlay.mouseMoved(e);
 
 	}
+	
+	public void mouseDragged(MouseEvent e) {
+		if (paused)
+			pauseOverlay.mouseDragged(e);
+	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
@@ -95,6 +100,8 @@ public class Playing extends State implements Statemethods {
 		}
 
 	}
+	
+	
 
 	@Override
 	public void keyReleased(KeyEvent e) {
