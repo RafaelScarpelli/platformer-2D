@@ -118,7 +118,7 @@ public class Player extends Entity {
 		}
 
 		if (inAir) {
-			if (canMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) {
+			if (CanMoveHere(hitbox.x, hitbox.y + airSpeed, hitbox.width, hitbox.height, lvlData)) {
 				hitbox.y += airSpeed;
 				airSpeed += gravity;
 				updateXPos(xSpeed);
@@ -151,7 +151,7 @@ public class Player extends Entity {
 	}
 
 	private void updateXPos(float xSpeed) {
-		if (canMoveHere(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)) {
+		if (CanMoveHere(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)) {
 			hitbox.x += xSpeed;
 		} else {
 			hitbox.x = GetEntityXPosNextToWall(hitbox, xSpeed);
