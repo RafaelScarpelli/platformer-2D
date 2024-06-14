@@ -29,7 +29,7 @@ public class MenuButton {
 		loadImgs();
 		initBounds();
 	}
-	
+
 	private void initBounds() {
 		bounds = new Rectangle(xPos - xOffsetCenter, yPos, B_WIDTH, B_HEIGHT);
 
@@ -55,7 +55,7 @@ public class MenuButton {
 		if (mousePressed)
 			index = 2;
 	}
-	
+
 	public boolean isMouseOver() {
 		return mouseOver;
 	}
@@ -71,11 +71,11 @@ public class MenuButton {
 	public void setMousePressed(boolean mousePressed) {
 		this.mousePressed = mousePressed;
 	}
-	
+
 	public Rectangle getBounds() {
 		return bounds;
 	}
-	
+
 	public void applyGamestate() {
 		Gamestate.state = state;
 	}
