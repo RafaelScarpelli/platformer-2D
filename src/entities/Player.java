@@ -1,10 +1,18 @@
 package entities;
 
-import static utilz.Constants.PlayerConstants.*;
-import static utilz.HelpMethods.*;
+import static utilz.Constants.PlayerConstants.ATTACK_1;
+import static utilz.Constants.PlayerConstants.FALLING;
+import static utilz.Constants.PlayerConstants.GetSpriteAmount;
+import static utilz.Constants.PlayerConstants.IDLE;
+import static utilz.Constants.PlayerConstants.JUMP;
+import static utilz.Constants.PlayerConstants.RUNNING;
+import static utilz.HelpMethods.CanMoveHere;
+import static utilz.HelpMethods.GetEntityXPosNextToWall;
+import static utilz.HelpMethods.GetEntityYPosUnderRoofOrAboveFloor;
+import static utilz.HelpMethods.IsEntityOnFloor;
 
+import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.geom.Rectangle2D.Float;
 import java.awt.image.BufferedImage;
 
 import main.Game;
@@ -29,6 +37,23 @@ public class Player extends Entity {
 	private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
 	private boolean inAir = false;
 
+	// status bar ui
+	private BufferedImage statusBarImg;
+	
+	private int statusBarWidth = (int) (192 * Game.SCALE);
+	private int statusBarHeight = (int) (58 * Game.SCALE);
+	private int statusBarX = (int) (10 * Game.SCALE);
+	private int statusBarY = (int) (10 * Game.SCALE);
+
+	private int healthBarWidth = (int) (150 * Game.SCALE);
+	private int healthBarHeight = (int) (4 * Game.SCALE);
+	private int healthBarXStart = (int) (34 * Game.SCALE);
+	private int healthBarYStart = (int) (14 * Game.SCALE);
+	
+	private int maxHealth = 100;
+	private int currentHealth = 50;
+	private int healthWidth = healthBarWidth;
+
 	public Player(float x, float y, int width, int height) {
 		super(x, y, width, height);
 		loadAnimations();
@@ -36,15 +61,28 @@ public class Player extends Entity {
 	}
 
 	public void update() {
+		updateHealthBar();
+		
 		updatePos();
 		updateAnimationTick();
 		setAnimation();
+	}
+	
+	private void updateHealthBar() {
+		healthWidth = (int) ((currentHealth / (float) maxHealth) * healthBarWidth);
 	}
 
 	public void render(Graphics g, int lvlOffset) {
 		g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset) - lvlOffset,
 				(int) (hitbox.y - yDrawOffset), width, height, null);
 //		drawHitbox(g, lvlOffset);
+		drawUI(g);
+	}
+	
+	private void drawUI(Graphics g) {
+		g.drawImage(statusBarImg, statusBarX, statusBarY, statusBarWidth, statusBarHeight, null);
+		g.setColor(Color.red);
+		g.fillRect(healthBarXStart + statusBarX, healthBarYStart + statusBarY, healthWidth, healthBarHeight);
 	}
 
 	private void updateAnimationTick() {
@@ -157,6 +195,15 @@ public class Player extends Entity {
 			hitbox.x = GetEntityXPosNextToWall(hitbox, xSpeed);
 		}
 	}
+	
+	public void changeHealth(int value) {
+		currentHealth += value;
+
+		if (currentHealth <= 0)
+			currentHealth = 0;
+		else if (currentHealth >= maxHealth)
+			currentHealth = maxHealth;
+	}
 
 	private void loadAnimations() {
 		BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
@@ -167,6 +214,8 @@ public class Player extends Entity {
 				animations[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
 			}
 		}
+		
+		statusBarImg = LoadSave.GetSpriteAtlas(LoadSave.STATUS_BAR);
 	}
 
 	public void loadlvlData(int[][] lvlData) {
