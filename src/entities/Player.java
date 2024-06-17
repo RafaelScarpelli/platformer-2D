@@ -13,8 +13,10 @@ import static utilz.HelpMethods.IsEntityOnFloor;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
+import gamestates.Playing;
 import main.Game;
 import utilz.LoadSave;
 
@@ -39,7 +41,7 @@ public class Player extends Entity {
 
 	// status bar ui
 	private BufferedImage statusBarImg;
-	
+
 	private int statusBarWidth = (int) (192 * Game.SCALE);
 	private int statusBarHeight = (int) (58 * Game.SCALE);
 	private int statusBarX = (int) (10 * Game.SCALE);
@@ -49,25 +51,49 @@ public class Player extends Entity {
 	private int healthBarHeight = (int) (4 * Game.SCALE);
 	private int healthBarXStart = (int) (34 * Game.SCALE);
 	private int healthBarYStart = (int) (14 * Game.SCALE);
-	
+
 	private int maxHealth = 100;
 	private int currentHealth = 50;
 	private int healthWidth = healthBarWidth;
+
+	// atack box
+	private Rectangle2D.Float attackBox;
+
+	private int flipX = 0;
+	private int flipW = 1;
+
+	private boolean attackChecked;
+	private Playing playing;
 
 	public Player(float x, float y, int width, int height) {
 		super(x, y, width, height);
 		loadAnimations();
 		initHitbox(x, y, (int) (20 * Game.SCALE), (int) (27 * Game.SCALE));
+		initAttackBox();
+	}
+
+	private void initAttackBox() {
+		attackBox = new Rectangle2D.Float(x, y, (int) (20 * Game.SCALE), (int) (20 * Game.SCALE));
 	}
 
 	public void update() {
 		updateHealthBar();
-		
+		updateAttackBox();
+
 		updatePos();
 		updateAnimationTick();
 		setAnimation();
 	}
-	
+
+	private void updateAttackBox() {
+		if (right)
+			attackBox.x = hitbox.x + hitbox.width + (int) (Game.SCALE * 10);
+		else if (left)
+			attackBox.x = hitbox.x - hitbox.width - (int) (Game.SCALE * 10);
+
+		attackBox.y = hitbox.y + (Game.SCALE * 10);
+	}
+
 	private void updateHealthBar() {
 		healthWidth = (int) ((currentHealth / (float) maxHealth) * healthBarWidth);
 	}
@@ -76,9 +102,16 @@ public class Player extends Entity {
 		g.drawImage(animations[playerAction][aniIndex], (int) (hitbox.x - xDrawOffset) - lvlOffset,
 				(int) (hitbox.y - yDrawOffset), width, height, null);
 //		drawHitbox(g, lvlOffset);
+		drawAttackBox(g, lvlOffset);
 		drawUI(g);
 	}
-	
+
+	private void drawAttackBox(Graphics g, int lvlOffsetX) {
+		g.setColor(Color.red);
+		g.drawRect((int) attackBox.x - lvlOffsetX, (int) attackBox.y, (int) attackBox.width, (int) attackBox.height);
+
+	}
+
 	private void drawUI(Graphics g) {
 		g.drawImage(statusBarImg, statusBarX, statusBarY, statusBarWidth, statusBarHeight, null);
 		g.setColor(Color.red);
@@ -195,7 +228,7 @@ public class Player extends Entity {
 			hitbox.x = GetEntityXPosNextToWall(hitbox, xSpeed);
 		}
 	}
-	
+
 	public void changeHealth(int value) {
 		currentHealth += value;
 
@@ -214,7 +247,7 @@ public class Player extends Entity {
 				animations[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
 			}
 		}
-		
+
 		statusBarImg = LoadSave.GetSpriteAtlas(LoadSave.STATUS_BAR);
 	}
 
