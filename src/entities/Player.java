@@ -1,11 +1,7 @@
 package entities;
 
-import static utilz.Constants.PlayerConstants.ATTACK_1;
-import static utilz.Constants.PlayerConstants.FALLING;
-import static utilz.Constants.PlayerConstants.GetSpriteAmount;
-import static utilz.Constants.PlayerConstants.IDLE;
-import static utilz.Constants.PlayerConstants.JUMP;
-import static utilz.Constants.PlayerConstants.RUNNING;
+import static utilz.Constants.PlayerConstants.*;
+
 import static utilz.HelpMethods.CanMoveHere;
 import static utilz.HelpMethods.GetEntityXPosNextToWall;
 import static utilz.HelpMethods.GetEntityYPosUnderRoofOrAboveFloor;
@@ -149,7 +145,7 @@ public class Player extends Entity {
 		}
 
 		if (attacking) {
-			playerAction = ATTACK_1;
+			playerAction = ATTACK;
 		}
 
 		if (startAni != playerAction) {
@@ -241,7 +237,7 @@ public class Player extends Entity {
 	private void loadAnimations() {
 		BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.PLAYER_ATLAS);
 
-		animations = new BufferedImage[9][6];
+		animations = new BufferedImage[7][8];
 		for (int j = 0; j < animations.length; j++) {
 			for (int i = 0; i < animations[j].length; i++) {
 				animations[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
