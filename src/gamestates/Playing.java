@@ -101,11 +101,17 @@ public class Playing extends State implements Statemethods {
 	private void drawClouds(Graphics g) {
 
 		for (int i = 0; i < 3; i++)
-			g.drawImage(bigCloud, i * BIG_CLOUD_WIDTH - (int) (xLvlOffset * 0.3), (int) (204 * Game.SCALE), BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT, null);
+			g.drawImage(bigCloud, i * BIG_CLOUD_WIDTH - (int) (xLvlOffset * 0.3), (int) (204 * Game.SCALE),
+					BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT, null);
 
 		for (int i = 0; i < smallCloudsPos.length; i++)
-			g.drawImage(smallCloud, SMALL_CLOUD_WIDTH * 4 * i - (int) (xLvlOffset * 0.7), smallCloudsPos[i], SMALL_CLOUD_WIDTH, SMALL_CLOUD_HEIGHT, null);
+			g.drawImage(smallCloud, SMALL_CLOUD_WIDTH * 4 * i - (int) (xLvlOffset * 0.7), smallCloudsPos[i],
+					SMALL_CLOUD_WIDTH, SMALL_CLOUD_HEIGHT, null);
 
+	}
+
+	public void resetAll() {
+		// TODO: reset playing, enemy, lvl etc.
 	}
 
 	@Override
