@@ -49,7 +49,7 @@ public class Player extends Entity {
 	private int healthBarYStart = (int) (14 * Game.SCALE);
 
 	private int maxHealth = 100;
-	private int currentHealth = 50;
+	private int currentHealth = 100;
 	private int healthWidth = healthBarWidth;
 
 	// atack box
@@ -100,7 +100,7 @@ public class Player extends Entity {
 				(int) (hitbox.y - yDrawOffset), 
 				width * flipW, height, null);
 //		drawHitbox(g, lvlOffset);
-		drawAttackBox(g, lvlOffset);
+//		drawAttackBox(g, lvlOffset);
 		drawUI(g);
 	}
 

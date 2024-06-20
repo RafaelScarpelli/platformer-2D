@@ -17,11 +17,16 @@ public abstract class Enemy extends Entity {
 	protected int walkDir = LEFT;
 	protected int tileY;
 	protected float attackDistance = Game.TILES_SIZE;
+	protected int maxHealth;
+	protected int currentHealth;
+	protected boolean active = true;
 
 	public Enemy(float x, float y, int width, int height, int enemyType) {
 		super(x, y, width, height);
 		this.enemyType = enemyType;
 		initHitbox(x, y, width, height);
+		maxHealth = GetMaxHealth(enemyType);
+		currentHealth = maxHealth;
 
 	}
 
@@ -92,6 +97,14 @@ public abstract class Enemy extends Entity {
 		aniTick = 0;
 		aniIndex = 0;
 	}
+	
+	public void hurt(int amount) {
+		currentHealth -= amount;
+		if (currentHealth <= 0)
+			newState(DEAD);
+		else
+			newState(HIT);
+	}
 
 	protected void updateAnimationTick() {
 		aniTick++;
@@ -102,6 +115,10 @@ public abstract class Enemy extends Entity {
 				aniIndex = 0;
 				if (enemyState == ATTACK)
 					enemyState = IDLE;
+				else if (enemyState == HIT)
+					enemyState = IDLE;
+				else if (enemyState == DEAD)
+					active = false;
 
 			}
 		}
@@ -121,6 +138,10 @@ public abstract class Enemy extends Entity {
 
 	public int getEnemyState() {
 		return enemyState;
+	}
+	
+	public boolean isActive() {
+		return active;
 	}
 
 }

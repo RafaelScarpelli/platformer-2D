@@ -18,7 +18,7 @@ public class Constants {
 
 		public static final int CRABBY_WIDTH = (int) (CRABBY_WIDTH_DEFAULT * Game.SCALE);
 		public static final int CRABBY_HEIGHT = (int) (CRABBY_HEIGHT_DEFAULT * Game.SCALE);
-		
+
 		public static final int CRABBY_DRAWOFFSET_X = (int) (26 * Game.SCALE);
 		public static final int CRABBY_DRAWOFFSET_Y = (int) (9 * Game.SCALE);
 
@@ -41,6 +41,25 @@ public class Constants {
 			}
 
 			return 0;
+
+		}
+
+		public static int GetMaxHealth(int enemy_type) {
+			switch (enemy_type) {
+			case CRABBY:
+				return 10;
+			default:
+				return 1;
+			}
+		}
+
+		public static int GetEnemyDmg(int enemy_type) {
+			switch (enemy_type) {
+			case CRABBY:
+				return 15;
+			default:
+				return 0;
+			}
 
 		}
 
