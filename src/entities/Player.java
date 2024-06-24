@@ -1,7 +1,11 @@
 package entities;
 
-import static utilz.Constants.PlayerConstants.*;
-
+import static utilz.Constants.PlayerConstants.ATTACK;
+import static utilz.Constants.PlayerConstants.FALLING;
+import static utilz.Constants.PlayerConstants.GetSpriteAmount;
+import static utilz.Constants.PlayerConstants.IDLE;
+import static utilz.Constants.PlayerConstants.JUMP;
+import static utilz.Constants.PlayerConstants.RUNNING;
 import static utilz.HelpMethods.CanMoveHere;
 import static utilz.HelpMethods.GetEntityXPosNextToWall;
 import static utilz.HelpMethods.GetEntityYPosUnderRoofOrAboveFloor;
@@ -61,8 +65,9 @@ public class Player extends Entity {
 	private boolean attackChecked;
 	private Playing playing;
 
-	public Player(float x, float y, int width, int height) {
+	public Player(float x, float y, int width, int height, Playing playing) {
 		super(x, y, width, height);
+		this.playing = playing;
 		loadAnimations();
 		initHitbox(x, y, (int) (20 * Game.SCALE), (int) (27 * Game.SCALE));
 		initAttackBox();
@@ -77,8 +82,18 @@ public class Player extends Entity {
 		updateAttackBox();
 
 		updatePos();
+		if (attacking)
+			checkAttack();
 		updateAnimationTick();
 		setAnimation();
+	}
+	
+	private void checkAttack() {
+		if (attackChecked || aniIndex != 1)
+			return;
+		attackChecked = true;
+		playing.checkEnemyHit(attackBox);
+
 	}
 
 	private void updateAttackBox() {
@@ -125,6 +140,7 @@ public class Player extends Entity {
 			if (aniIndex >= GetSpriteAmount(playerAction)) {
 				aniIndex = 0;
 				attacking = false;
+				attackChecked = false;
 			}
 		}
 	}
@@ -148,6 +164,11 @@ public class Player extends Entity {
 
 		if (attacking) {
 			playerAction = ATTACK;
+			if(startAni != ATTACK) {
+				aniIndex = 1;
+				aniTick = 0;
+				return;
+			}
 		}
 
 		if (startAni != playerAction) {

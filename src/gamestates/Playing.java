@@ -1,9 +1,15 @@
 package gamestates;
 
+import static utilz.Constants.Environment.BIG_CLOUD_HEIGHT;
+import static utilz.Constants.Environment.BIG_CLOUD_WIDTH;
+import static utilz.Constants.Environment.SMALL_CLOUD_HEIGHT;
+import static utilz.Constants.Environment.SMALL_CLOUD_WIDTH;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
@@ -13,7 +19,6 @@ import levels.LevelManager;
 import main.Game;
 import ui.PauseOverlay;
 import utilz.LoadSave;
-import static utilz.Constants.Environment.*;
 
 public class Playing extends State implements Statemethods {
 	private Player player;
@@ -48,7 +53,7 @@ public class Playing extends State implements Statemethods {
 	private void initClasses() {
 		levelManager = new LevelManager(game);
 		enemyManager = new EnemyManager(this);
-		player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE));
+		player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE), this);
 		player.loadlvlData(levelManager.getCurrentLevel().getLevelData());
 		pauseOverlay = new PauseOverlay(this);
 	}
@@ -112,6 +117,10 @@ public class Playing extends State implements Statemethods {
 
 	public void resetAll() {
 		// TODO: reset playing, enemy, lvl etc.
+	}
+	
+	public void checkEnemyHit(Rectangle2D.Float attackBox) {
+		enemyManager.checkEnemyHit(attackBox);
 	}
 
 	@Override

@@ -1,8 +1,21 @@
 package entities;
 
-import static utilz.Constants.EnemyConstants.*;
-import static utilz.HelpMethods.*;
-import static utilz.Constants.Directions.*;
+import static utilz.Constants.Directions.LEFT;
+import static utilz.Constants.Directions.RIGHT;
+import static utilz.Constants.EnemyConstants.ATTACK;
+import static utilz.Constants.EnemyConstants.DEAD;
+import static utilz.Constants.EnemyConstants.GetEnemyDmg;
+import static utilz.Constants.EnemyConstants.GetMaxHealth;
+import static utilz.Constants.EnemyConstants.GetSpriteAmount;
+import static utilz.Constants.EnemyConstants.HIT;
+import static utilz.Constants.EnemyConstants.IDLE;
+import static utilz.HelpMethods.CanMoveHere;
+import static utilz.HelpMethods.GetEntityYPosUnderRoofOrAboveFloor;
+import static utilz.HelpMethods.IsEntityOnFloor;
+import static utilz.HelpMethods.IsFloor;
+import static utilz.HelpMethods.IsSightClear;
+
+import java.awt.geom.Rectangle2D;
 
 import main.Game;
 
@@ -20,6 +33,7 @@ public abstract class Enemy extends Entity {
 	protected int maxHealth;
 	protected int currentHealth;
 	protected boolean active = true;
+	protected boolean attackChecked;
 
 	public Enemy(float x, float y, int width, int height, int enemyType) {
 		super(x, y, width, height);
@@ -97,13 +111,20 @@ public abstract class Enemy extends Entity {
 		aniTick = 0;
 		aniIndex = 0;
 	}
-	
+
 	public void hurt(int amount) {
 		currentHealth -= amount;
 		if (currentHealth <= 0)
 			newState(DEAD);
 		else
 			newState(HIT);
+	}
+
+	protected void checkPlayerHit(Rectangle2D.Float attackBox, Player player) {
+		if (attackBox.intersects(player.hitbox))
+			player.changeHealth(-GetEnemyDmg(enemyType));
+		attackChecked = true;
+
 	}
 
 	protected void updateAnimationTick() {
@@ -139,7 +160,7 @@ public abstract class Enemy extends Entity {
 	public int getEnemyState() {
 		return enemyState;
 	}
-	
+
 	public boolean isActive() {
 		return active;
 	}
