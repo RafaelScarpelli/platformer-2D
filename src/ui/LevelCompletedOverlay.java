@@ -4,8 +4,10 @@ import static utilz.Constants.UI.URMButtons.URM_SIZE;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
+import gamestates.Gamestate;
 import gamestates.Playing;
 import main.Game;
 import utilz.LoadSave;
@@ -51,5 +53,39 @@ public class LevelCompletedOverlay {
 	public void update() {
 		next.update();
 		menu.update();
+	}
+	
+	private boolean isIn(UrmButton b, MouseEvent e) {
+		return b.getBounds().contains(e.getX(), e.getY());
+	}
+	
+	public void mouseMoved(MouseEvent e) {
+		next.setMouseOver(false);
+		menu.setMouseOver(false);
+
+		if (isIn(menu, e))
+			menu.setMouseOver(true);
+		else if (isIn(next, e))
+			next.setMouseOver(true);
+	}
+	
+	public void mouseReleased(MouseEvent e) {
+		if (isIn(menu, e)) {
+			if (menu.isMousePressed()) {
+				System.out.println("Menu!");
+			}
+		} else if (isIn(next, e))
+			if (next.isMousePressed())
+				System.out.println("NExt!");
+
+		menu.resetBools();
+		next.resetBools();
+	}
+	
+	public void mousePressed(MouseEvent e) {
+		if (isIn(menu, e))
+			menu.setMousePressed(true);
+		else if (isIn(next, e))
+			next.setMousePressed(true);
 	}
 }

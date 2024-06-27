@@ -43,6 +43,7 @@ public class Playing extends State implements Statemethods {
 	private Random rnd = new Random();
 
 	private boolean gameOver;
+	private boolean lvlCompleted = true;
 
 	public Playing(Game game) {
 		super(game);
@@ -68,13 +69,15 @@ public class Playing extends State implements Statemethods {
 
 	@Override
 	public void update() {
-		if (!paused && !gameOver) {
+		if (paused) {
+			pauseOverlay.update();
+		} else if (lvlCompleted) {
+			levelCompletedOverlay.update();
+		} else if (!gameOver) {
 			levelManager.update();
 			player.update();
 			enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
 			checkCloseToBorder();
-		} else {
-			pauseOverlay.update();
 		}
 	}
 
@@ -110,6 +113,8 @@ public class Playing extends State implements Statemethods {
 			pauseOverlay.draw(g);
 		} else if (gameOver)
 			gameOverOverlay.draw(g);
+		else if (lvlCompleted)
+			levelCompletedOverlay.draw(g);
 	}
 
 	private void drawClouds(Graphics g) {
@@ -192,23 +197,32 @@ public class Playing extends State implements Statemethods {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		if (!gameOver)
+		if (!gameOver) {
 			if (paused)
 				pauseOverlay.mousePressed(e);
+			else if (lvlCompleted)
+				levelCompletedOverlay.mousePressed(e);
+		}
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		if (!gameOver)
+		if (!gameOver) {
 			if (paused)
 				pauseOverlay.mouseReleased(e);
+			else if (lvlCompleted)
+				levelCompletedOverlay.mouseReleased(e);
+		}
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		if (!gameOver)
+		if (!gameOver) {
 			if (paused)
 				pauseOverlay.mouseMoved(e);
+			else if (lvlCompleted)
+				levelCompletedOverlay.mouseMoved(e);
+		}
 	}
 
 	public void unpauseGame() {
