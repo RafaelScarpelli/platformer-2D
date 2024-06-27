@@ -18,6 +18,7 @@ import entities.Player;
 import levels.LevelManager;
 import main.Game;
 import ui.GameOverOverlay;
+import ui.LevelCompletedOverlay;
 import ui.PauseOverlay;
 import utilz.LoadSave;
 
@@ -27,6 +28,7 @@ public class Playing extends State implements Statemethods {
 	private EnemyManager enemyManager;
 	private PauseOverlay pauseOverlay;
 	private GameOverOverlay gameOverOverlay;
+	private LevelCompletedOverlay levelCompletedOverlay;
 	private boolean paused = false;
 
 	private int xLvlOffset;
@@ -61,6 +63,7 @@ public class Playing extends State implements Statemethods {
 		player.loadlvlData(levelManager.getCurrentLevel().getLevelData());
 		pauseOverlay = new PauseOverlay(this);
 		gameOverOverlay = new GameOverOverlay(this);
+		levelCompletedOverlay = new LevelCompletedOverlay(this);
 	}
 
 	@Override
