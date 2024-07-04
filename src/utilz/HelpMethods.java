@@ -1,14 +1,15 @@
 package utilz;
 
+import static utilz.Constants.EnemyConstants.CRABBY;
+
 import java.awt.Color;
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import entities.Crabby;
 import main.Game;
-
-import static utilz.Constants.EnemyConstants.CRABBY;
 
 public class HelpMethods {
 
@@ -132,6 +133,17 @@ public class HelpMethods {
 					list.add(new Crabby(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
 			}
 		return list;
+	}
+	
+	public static Point GetPlayerSpawn(BufferedImage img) {
+		for (int j = 0; j < img.getHeight(); j++)
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getGreen();
+				if (value == 100)
+					return new Point(i * Game.TILES_SIZE, j * Game.TILES_SIZE);
+			}
+		return new Point(1 * Game.TILES_SIZE, 1 * Game.TILES_SIZE);
 	}
 
 }
