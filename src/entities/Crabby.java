@@ -10,14 +10,12 @@ import java.awt.geom.Rectangle2D;
 import main.Game;
 
 public class Crabby extends Enemy {
-
-	// AttackBox
-	private Rectangle2D.Float attackBox;
+	
 	private int attackBoxOffsetX;
 
 	public Crabby(float x, float y) {
 		super(x, y, CRABBY_WIDTH, CRABBY_HEIGHT, CRABBY);
-		initHitbox(x, y, (int) (22 * Game.SCALE), (int) (19 * Game.SCALE));
+		initHitbox(22, 19);
 		initAttackBox();
 
 	}
@@ -75,11 +73,6 @@ public class Crabby extends Enemy {
 			}
 		}
 
-	}
-
-	public void drawAttackBox(Graphics g, int xLvlOffset) {
-		g.setColor(Color.red);
-		g.drawRect((int) (attackBox.x - xLvlOffset), (int) attackBox.y, (int) attackBox.width, (int) attackBox.height);
 	}
 
 	public int flipX() {
