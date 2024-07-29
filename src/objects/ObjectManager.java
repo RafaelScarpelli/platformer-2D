@@ -1,8 +1,16 @@
 package objects;
 
-import static utilz.Constants.ObjectConstants.*;
+import static utilz.Constants.ObjectConstants.BARREL;
+import static utilz.Constants.ObjectConstants.BLUE_POTION_VALUE;
+import static utilz.Constants.ObjectConstants.CONTAINER_HEIGHT;
+import static utilz.Constants.ObjectConstants.CONTAINER_WIDTH;
+import static utilz.Constants.ObjectConstants.POTION_HEIGHT;
+import static utilz.Constants.ObjectConstants.POTION_WIDTH;
+import static utilz.Constants.ObjectConstants.RED_POTION;
+import static utilz.Constants.ObjectConstants.RED_POTION_VALUE;
 
 import java.awt.Graphics;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -20,9 +28,41 @@ public class ObjectManager {
 	public ObjectManager(Playing playing) {
 		this.playing = playing;
 		loadImgs();
-		
+
 	}
-	
+
+	public void checkObjectTouched(Rectangle2D.Float hitbox) {
+		for (Potion p : potions)
+			if (p.isActive()) {
+				if (hitbox.intersects(p.getHitbox())) {
+					p.setActive(false);
+					applyEffectToPlayer(p);
+				}
+			}
+	}
+
+	public void applyEffectToPlayer(Potion p) {
+		if (p.getObjType() == RED_POTION)
+			playing.getPlayer().changeHealth(RED_POTION_VALUE);
+		else
+			playing.getPlayer().changePower(BLUE_POTION_VALUE);
+	}
+
+	public void checkObjectHit(Rectangle2D.Float attackbox) {
+		for (GameContainer gc : containers)
+			if (gc.isActive()) {
+				if (gc.getHitbox().intersects(attackbox)) {
+					gc.setAnimation(true);
+					int type = 0;
+					if (gc.getObjType() == BARREL)
+						type = 1;
+					potions.add(new Potion((int) (gc.getHitbox().x + gc.getHitbox().width / 2),
+							(int) (gc.getHitbox().y - gc.getHitbox().height / 2), type));
+					return;
+				}
+			}
+	}
+
 	public void loadObjects(Level newLevel) {
 		potions = newLevel.getPotions();
 		containers = newLevel.getContainers();
@@ -81,5 +121,13 @@ public class ObjectManager {
 						(int) (p.getHitbox().x - p.getxDrawOffset() - xLvlOffset),
 						(int) (p.getHitbox().y - p.getyDrawOffset()), POTION_WIDTH, POTION_HEIGHT, null);
 			}
+	}
+	
+	public void resetAllObjects() {
+		for (Potion p : potions)
+			p.reset();
+
+		for (GameContainer gc : containers)
+			gc.reset();
 	}
 }

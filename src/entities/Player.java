@@ -1,8 +1,11 @@
 package entities;
 
-import static utilz.Constants.PlayerConstants.*;
-import static utilz.HelpMethods.*;
 import static utilz.Constants.*;
+import static utilz.Constants.PlayerConstants.*;
+import static utilz.HelpMethods.CanMoveHere;
+import static utilz.HelpMethods.GetEntityXPosNextToWall;
+import static utilz.HelpMethods.GetEntityYPosUnderRoofOrAboveFloor;
+import static utilz.HelpMethods.IsEntityOnFloor;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -53,7 +56,7 @@ public class Player extends Entity {
 		this.playing = playing;
 		this.state = IDLE;
 		this.maxHealth = 100;
-		this.currentHealth = maxHealth;
+		this.currentHealth = 35;
 		this.walkSpeed = 1.0f * Game.SCALE;
 		loadAnimations();
 		initHitbox(20, 27);
@@ -73,19 +76,26 @@ public class Player extends Entity {
 
 	public void update() {
 		updateHealthBar();
-		
+
 		if (currentHealth <= 0) {
 			playing.setGameOver(true);
 			return;
 		}
-		
+
 		updateAttackBox();
 
 		updatePos();
+		if (moving)
+			checkPotionTouched();
 		if (attacking)
 			checkAttack();
+		
 		updateAnimationTick();
 		setAnimation();
+	}
+	
+	private void checkPotionTouched() {
+		playing.checkPotionTouched(hitbox);
 	}
 	
 	private void checkAttack() {
@@ -93,6 +103,7 @@ public class Player extends Entity {
 			return;
 		attackChecked = true;
 		playing.checkEnemyHit(attackBox);
+		playing.checkObjectHit(attackBox);
 
 	}
 
@@ -253,6 +264,10 @@ public class Player extends Entity {
 			currentHealth = 0;
 		else if (currentHealth >= maxHealth)
 			currentHealth = maxHealth;
+	}
+	
+	public void changePower(int value) {
+		System.out.println("Added power!");
 	}
 
 	private void loadAnimations() {
