@@ -1,13 +1,14 @@
 package objects;
 
+import static utilz.Constants.ObjectConstants.*;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 import gamestates.Playing;
+import levels.Level;
 import utilz.LoadSave;
-
-import static utilz.Constants.ObjectConstants.*;
 
 public class ObjectManager {
 
@@ -20,14 +21,11 @@ public class ObjectManager {
 		this.playing = playing;
 		loadImgs();
 		
-		potions = new ArrayList<>();
-		potions.add(new Potion(100, 150, RED_POTION));
-		potions.add(new Potion(200, 150, BLUE_POTION));
-		
-		containers = new ArrayList<>();
-		containers.add(new GameContainer(300, 150, BARREL));
-		containers.add(new GameContainer(400, 150, BOX));
-		
+	}
+	
+	public void loadObjects(Level newLevel) {
+		potions = newLevel.getPotions();
+		containers = newLevel.getContainers();
 	}
 
 	private void loadImgs() {
