@@ -282,5 +282,9 @@ public class Playing extends State implements Statemethods {
 	public ObjectManager getObjectManager() {
 		return objectManager;
 	}
+	
+	public LevelManager getLevelManager() {
+		return levelManager;
+	}
 
 }
