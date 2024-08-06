@@ -52,22 +52,22 @@ public class Playing extends State implements Statemethods {
 		smallCloudsPos = new int[8];
 		for (int i = 0; i < smallCloudsPos.length; i++)
 			smallCloudsPos[i] = (int) (90 * Game.SCALE) + rnd.nextInt((int) (100 * Game.SCALE));
-		
+
 		calcLvlOffset();
 		loadStartLevel();
 	}
-	
+
 	public void loadNextLevel() {
 		resetAll();
 		levelManager.loadNextLevel();
 		player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
 	}
-	
+
 	private void loadStartLevel() {
 		enemyManager.loadEnemies(levelManager.getCurrentLevel());
 		objectManager.loadObjects(levelManager.getCurrentLevel());
 	}
-	
+
 	private void calcLvlOffset() {
 		maxLvlOffsetX = levelManager.getCurrentLevel().getLvlOffset();
 	}
@@ -76,11 +76,11 @@ public class Playing extends State implements Statemethods {
 		levelManager = new LevelManager(game);
 		enemyManager = new EnemyManager(this);
 		objectManager = new ObjectManager(this);
-		
+
 		player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE), this);
 		player.loadlvlData(levelManager.getCurrentLevel().getLevelData());
 		player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
-		
+
 		pauseOverlay = new PauseOverlay(this);
 		gameOverOverlay = new GameOverOverlay(this);
 		levelCompletedOverlay = new LevelCompletedOverlay(this);
@@ -118,7 +118,6 @@ public class Playing extends State implements Statemethods {
 			xLvlOffset = maxLvlOffsetX;
 		else if (xLvlOffset < 0)
 			xLvlOffset = 0;
-
 	}
 
 	@Override
@@ -143,15 +142,11 @@ public class Playing extends State implements Statemethods {
 	}
 
 	private void drawClouds(Graphics g) {
-
 		for (int i = 0; i < 3; i++)
-			g.drawImage(bigCloud, i * BIG_CLOUD_WIDTH - (int) (xLvlOffset * 0.3), (int) (204 * Game.SCALE),
-					BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT, null);
+			g.drawImage(bigCloud, i * BIG_CLOUD_WIDTH - (int) (xLvlOffset * 0.3), (int) (204 * Game.SCALE), BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT, null);
 
 		for (int i = 0; i < smallCloudsPos.length; i++)
-			g.drawImage(smallCloud, SMALL_CLOUD_WIDTH * 4 * i - (int) (xLvlOffset * 0.7), smallCloudsPos[i],
-					SMALL_CLOUD_WIDTH, SMALL_CLOUD_HEIGHT, null);
-
+			g.drawImage(smallCloud, SMALL_CLOUD_WIDTH * 4 * i - (int) (xLvlOffset * 0.7), smallCloudsPos[i], SMALL_CLOUD_WIDTH, SMALL_CLOUD_HEIGHT, null);
 	}
 
 	public void resetAll() {
@@ -167,7 +162,7 @@ public class Playing extends State implements Statemethods {
 	public void setGameOver(boolean gameOver) {
 		this.gameOver = gameOver;
 	}
-	
+
 	public void checkObjectHit(Rectangle2D.Float attackBox) {
 		objectManager.checkObjectHit(attackBox);
 	}
@@ -175,11 +170,11 @@ public class Playing extends State implements Statemethods {
 	public void checkEnemyHit(Rectangle2D.Float attackBox) {
 		enemyManager.checkEnemyHit(attackBox);
 	}
-	
+
 	public void checkPotionTouched(Rectangle2D.Float hitbox) {
 		objectManager.checkObjectTouched(hitbox);
 	}
-	
+
 	public void checkSpikesTouched(Player p) {
 		objectManager.checkSpikesTouched(p);
 	}
@@ -268,11 +263,11 @@ public class Playing extends State implements Statemethods {
 		} else
 			gameOverOverlay.mouseMoved(e);
 	}
-	
+
 	public void setLevelCompleted(boolean levelCompleted) {
 		this.lvlCompleted = levelCompleted;
 	}
-	
+
 	public void setMaxLvlOffset(int lvlOffset) {
 		this.maxLvlOffsetX = lvlOffset;
 	}
@@ -288,19 +283,19 @@ public class Playing extends State implements Statemethods {
 	public Player getPlayer() {
 		return player;
 	}
-	
+
 	public EnemyManager getEnemyManager() {
 		return enemyManager;
 	}
-	
+
 	public ObjectManager getObjectManager() {
 		return objectManager;
 	}
-	
+
 	public LevelManager getLevelManager() {
 		return levelManager;
 	}
-	
+
 	public void setPlayerDying(boolean playerDying) {
 		this.playerDying = playerDying;
 
