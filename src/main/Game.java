@@ -2,11 +2,13 @@ package main;
 
 import java.awt.Graphics;
 
+import audio.AudioPlayer;
 import gamestates.GameOptions;
 import gamestates.Gamestate;
 import gamestates.Menu;
 import gamestates.Playing;
 import ui.AudioOptions;
+import utilz.LoadSave;
 
 public class Game implements Runnable {
 
@@ -20,9 +22,10 @@ public class Game implements Runnable {
 	private Menu menu;
 	private GameOptions gameOptions;
 	private AudioOptions audioOptions;
+	private AudioPlayer audioPlayer;
 
 	public final static int TILES_DEFAULT_SIZE = 32;
-	public final static float SCALE = 1.0f;
+	public final static float SCALE = 1f;
 	public final static int TILES_IN_WIDTH = 26;
 	public final static int TILES_IN_HEIGHT = 14;
 	public final static int TILES_SIZE = (int) (TILES_DEFAULT_SIZE * SCALE);
@@ -34,17 +37,19 @@ public class Game implements Runnable {
 
 		gamePanel = new GamePanel(this);
 		gameWindow = new GameWindow(gamePanel);
-		gamePanel.setFocusable(true); // aparentemente resolveu o problema do foco da janela
+		gamePanel.setFocusable(true);
 		gamePanel.requestFocus();
 
 		startGameLoop();
 	}
 
 	private void initClasses() {
-		audioOptions = new AudioOptions();
+		audioOptions = new AudioOptions(this);
+		audioPlayer = new AudioPlayer();
 		menu = new Menu(this);
 		playing = new Playing(this);
 		gameOptions = new GameOptions(this);
+		
 	}
 
 	private void startGameLoop() {
@@ -133,9 +138,8 @@ public class Game implements Runnable {
 	}
 
 	public void windowFocusLost() {
-		if (Gamestate.state == Gamestate.PLAYING) {
+		if (Gamestate.state == Gamestate.PLAYING)
 			playing.getPlayer().resetDirBooleans();
-		}
 	}
 
 	public Menu getMenu() {
@@ -145,13 +149,16 @@ public class Game implements Runnable {
 	public Playing getPlaying() {
 		return playing;
 	}
-	
+
 	public GameOptions getGameOptions() {
 		return gameOptions;
 	}
-	
+
 	public AudioOptions getAudioOptions() {
 		return audioOptions;
 	}
 
+	public AudioPlayer getAudioPlayer() {
+		return audioPlayer;
+	}
 }

@@ -21,7 +21,7 @@ public class LevelManager {
 		levels = new ArrayList<>();
 		buildAllLevels();
 	}
-	
+
 	public void loadNextLevel() {
 		lvlIndex++;
 		if (lvlIndex >= levels.size()) {
@@ -36,7 +36,7 @@ public class LevelManager {
 		game.getPlaying().setMaxLvlOffset(newLevel.getLvlOffset());
 		game.getPlaying().getObjectManager().loadObjects(newLevel);
 	}
-	
+
 	private void buildAllLevels() {
 		BufferedImage[] allLevels = LoadSave.GetAllLevels();
 		for (BufferedImage img : allLevels)
@@ -45,15 +45,12 @@ public class LevelManager {
 
 	private void importOutsideSprites() {
 		BufferedImage img = LoadSave.GetSpriteAtlas(LoadSave.LEVEL_ATLAS);
-
 		levelSprite = new BufferedImage[48];
-		for (int j = 0; j < 4; j++) {
+		for (int j = 0; j < 4; j++)
 			for (int i = 0; i < 12; i++) {
 				int index = j * 12 + i;
 				levelSprite[index] = img.getSubimage(i * 32, j * 32, 32, 32);
 			}
-		}
-
 	}
 
 	public void draw(Graphics g, int lvlOffset) {
@@ -71,8 +68,13 @@ public class LevelManager {
 	public Level getCurrentLevel() {
 		return levels.get(lvlIndex);
 	}
-	
+
 	public int getAmountOfLevels() {
 		return levels.size();
 	}
+
+	public int getLevelIndex() {
+		return lvlIndex;
+	}
+
 }

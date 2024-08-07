@@ -1,7 +1,5 @@
 package ui;
 
-import static utilz.Constants.UI.URMButtons.URM_SIZE;
-
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseEvent;
@@ -11,6 +9,7 @@ import gamestates.Gamestate;
 import gamestates.Playing;
 import main.Game;
 import utilz.LoadSave;
+import static utilz.Constants.UI.URMButtons.*;
 
 public class LevelCompletedOverlay {
 
@@ -18,13 +17,13 @@ public class LevelCompletedOverlay {
 	private UrmButton menu, next;
 	private BufferedImage img;
 	private int bgX, bgY, bgW, bgH;
-	
+
 	public LevelCompletedOverlay(Playing playing) {
 		this.playing = playing;
 		initImg();
 		initButtons();
 	}
-	
+
 	private void initButtons() {
 		int menuX = (int) (330 * Game.SCALE);
 		int nextX = (int) (445 * Game.SCALE);
@@ -32,7 +31,7 @@ public class LevelCompletedOverlay {
 		next = new UrmButton(nextX, y, URM_SIZE, URM_SIZE, 0);
 		menu = new UrmButton(menuX, y, URM_SIZE, URM_SIZE, 2);
 	}
-	
+
 	private void initImg() {
 		img = LoadSave.GetSpriteAtlas(LoadSave.COMPLETED_IMG);
 		bgW = (int) (img.getWidth() * Game.SCALE);
@@ -40,8 +39,9 @@ public class LevelCompletedOverlay {
 		bgX = Game.GAME_WIDTH / 2 - bgW / 2;
 		bgY = (int) (75 * Game.SCALE);
 	}
-	
+
 	public void draw(Graphics g) {
+		// Added after youtube upload
 		g.setColor(new Color(0, 0, 0, 200));
 		g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
 
@@ -49,16 +49,16 @@ public class LevelCompletedOverlay {
 		next.draw(g);
 		menu.draw(g);
 	}
-	
+
 	public void update() {
 		next.update();
 		menu.update();
 	}
-	
+
 	private boolean isIn(UrmButton b, MouseEvent e) {
 		return b.getBounds().contains(e.getX(), e.getY());
 	}
-	
+
 	public void mouseMoved(MouseEvent e) {
 		next.setMouseOver(false);
 		menu.setMouseOver(false);
@@ -68,25 +68,28 @@ public class LevelCompletedOverlay {
 		else if (isIn(next, e))
 			next.setMouseOver(true);
 	}
-	
+
 	public void mouseReleased(MouseEvent e) {
 		if (isIn(menu, e)) {
 			if (menu.isMousePressed()) {
 				playing.resetAll();
-				Gamestate.state = Gamestate.MENU;
+				playing.setGamestate(Gamestate.MENU);
 			}
 		} else if (isIn(next, e))
-			if (next.isMousePressed())
+			if (next.isMousePressed()) {
 				playing.loadNextLevel();
+				playing.getGame().getAudioPlayer().setLevelSong(playing.getLevelManager().getLevelIndex());
+			}
 
 		menu.resetBools();
 		next.resetBools();
 	}
-	
+
 	public void mousePressed(MouseEvent e) {
 		if (isIn(menu, e))
 			menu.setMousePressed(true);
 		else if (isIn(next, e))
 			next.setMousePressed(true);
 	}
+
 }

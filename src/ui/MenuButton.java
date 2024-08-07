@@ -1,19 +1,14 @@
 package ui;
 
-import static utilz.Constants.UI.Buttons.B_HEIGHT;
-import static utilz.Constants.UI.Buttons.B_HEIGHT_DEFAULT;
-import static utilz.Constants.UI.Buttons.B_WIDTH;
-import static utilz.Constants.UI.Buttons.B_WIDTH_DEFAULT;
-
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 
 import gamestates.Gamestate;
 import utilz.LoadSave;
+import static utilz.Constants.UI.Buttons.*;
 
 public class MenuButton {
-
 	private int xPos, yPos, rowIndex, index;
 	private int xOffsetCenter = B_WIDTH / 2;
 	private Gamestate state;
@@ -38,10 +33,8 @@ public class MenuButton {
 	private void loadImgs() {
 		imgs = new BufferedImage[3];
 		BufferedImage temp = LoadSave.GetSpriteAtlas(LoadSave.MENU_BUTTONS);
-		for (int i = 0; i < imgs.length; i++) {
-			imgs[i] = temp.getSubimage(i * B_WIDTH_DEFAULT, rowIndex * B_HEIGHT_DEFAULT, B_WIDTH_DEFAULT,
-					B_HEIGHT_DEFAULT);
-		}
+		for (int i = 0; i < imgs.length; i++)
+			imgs[i] = temp.getSubimage(i * B_WIDTH_DEFAULT, rowIndex * B_HEIGHT_DEFAULT, B_WIDTH_DEFAULT, B_HEIGHT_DEFAULT);
 	}
 
 	public void draw(Graphics g) {
@@ -75,7 +68,7 @@ public class MenuButton {
 	public Rectangle getBounds() {
 		return bounds;
 	}
-
+ 
 	public void applyGamestate() {
 		Gamestate.state = state;
 	}
@@ -84,4 +77,8 @@ public class MenuButton {
 		mouseOver = false;
 		mousePressed = false;
 	}
+	public Gamestate getState() {
+		return state;
+	}
+
 }
