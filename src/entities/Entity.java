@@ -59,4 +59,8 @@ public abstract class Entity {
 	public int getAniIndex() {
 		return aniIndex;
 	}
+	
+	public int getCurrentHealth() {
+		return currentHealth;
+	}
 }
